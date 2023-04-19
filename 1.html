@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link href="css/all.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>美女个人写真</h1>
+			<!-- 组件 -->
+			<vue-photos :photos="girls"></vue-photos>
+		</div>
+		<template id="tmp">
+			<div class="zone">
+				<div class="bg" :style="{backgroundImage:'url('+selectedImg+')'}">
+					<button type="button" class="previous" @click="previousPhoto()">
+					 <a id="left_img_btn" class="s_pre" href="javascript:void(0)"></a>
+					</button>
+					<button type="button" class="next" @click="nextPhoto()">
+					  <a id="right_img_btn" class="s_next" href="javascript:void(0)"></a>
+					</button>
+				</div>
+								
+				<div class="list">
+					<div v-for="p in photos"
+					@click="changePhoto(p)"
+					 :style="{backgroundImage:'url('+p+')'}">
+						
+					</div>
+				</div>
+			</div>
+		</template>
+		<script>
+			
+			let vm =new Vue({
+				el:"#app",
+				data:{
+					girls:[
+							'img/001.jpg','img/002.jpg','img/003.jpg',
+							'img/004.jpg','img/005.jpg','img/006.jpg',
+							'img/007.jpg','img/008.jpg','img/009.jpg'
+					]
+				},
+				components:{
+					vuePhotos:{
+						template:"#tmp",
+						props:["photos"],
+						data(){
+							return {
+								index:0,
+								selectedImg:"img/001.jpg"
+							}
+						},
+						methods:{
+							previousPhoto(){
+								//计算图片序号
+								this.index--;
+								//判断是否是第一张
+								if(this.index<0){
+									this.index=this.photos.length-1;
+
+								}
+								
+								//得到图片
+								this.selectedImg = this.photos[this.index]
+							},
+							nextPhoto(){
+								this.index++;
+								//判断是否是最后一张
+								if(this.index>=this.photos.length){
+									this.index=0;
+								
+								}
+								
+								//得到图片
+								this.selectedImg = this.photos[this.index]
+								
+							},
+							changePhoto(img){
+								this.selectedImg=img
+							}
+						}
+					}
+				}
+			})
+			
+		</script>
+	</body>
+</html>
